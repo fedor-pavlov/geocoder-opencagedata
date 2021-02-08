@@ -109,3 +109,15 @@ If you would like to swith off the caching mechanism you may provide ```{ cached
     const coder = new geocoder({ cached: false })
 ```
 
+
+
+
+
+# Batch requests throttling
+It's important to note that just like any other service provider OpenCageData puts certain [limits](https://opencagedata.com/api#rate-limiting) on how much requests you may send per second. Free trial accounts are limited to 1 request per second. If you're going to issue requests at a faster rate you're probably going to be blocked by the server. Payed accounts are limited to much larger numbers of requests per second, but still these are not infinite numbers. When it comes to batch processing, a pace keeping techniques comes into play. The `geocoder-opencagedata` supports requests throttling by default so you can rest peacefully. If you send lots of requests to `geocoder` they will be arranged in a queue and scheduled to be sent to OCD at rate of 1 request per second. This is exactly what free accounts need. But if you've got a payed account and want to utilize the service at a faster rate though still within the allowed limits you may want to tweek internal pace keeper with `pace_limit` option like so:
+```javascript
+    const coder = new geocoder({ pace_limit: 15 })
+        // This will limit the geocoder to 15 requests per second.
+        // Put here whatever suits your contract with OpenCageData
+        // By default pace_limit equals to 1
+```
