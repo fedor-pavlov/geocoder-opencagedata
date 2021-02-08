@@ -1,5 +1,5 @@
 # Why OpenCageData?
-* Absolute majority of geocoding services (Google, HERE, Mapbox, Yandex, ...) don't allow you to store their geocoding data. With OpenCageData you are free to do so: [check OCD's policy on caching](https://opencagedata.com/api#caching)
+* Absolute majority of geocoding services (Google, HERE, Mapbox, Yandex, ...) don't allow you to store geocoding results. With OpenCageData you are free to cache and store geocoding results as long as you want: [check OCD's policy on caching](https://opencagedata.com/api#caching)
 * Generous free trial: 2500 free requests per day (as of Feb 08, 2021; please check with OpenCageData their current policy [here](https://opencagedata.com/pricing))
 * More than reasonable subscription fees: [pricing](https://opencagedata.com/pricing)
 * You can choose one-time purchase instead of subscription. You can buy 10 000 requests for 20 EUR (as of Feb 02, 2021; please check actual pricing with OpenCageData [here](https://opencagedata.com/pricing))
