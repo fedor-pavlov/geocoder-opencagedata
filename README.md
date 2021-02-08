@@ -36,7 +36,7 @@
     //Geo coordiantes: { lat: 40.7127281, lng: -74.0060152 }
 ```
 ## Reverse geocoding
-Reverse geocoding is performed pretty the same way. The only difference is that you may be interested in other ```response``` object properties:
+Reverse geocoding is performed pretty the same way. The only difference is that you may be interested in other `response` object properties:
 ```javascript
     const { geocoder } = require('geocoder-opencagedata')
     const coder = new geocoder({api_key: 'YOUR API KEY'})
@@ -62,7 +62,7 @@ Reverse geocoding is performed pretty the same way. The only difference is that 
 
 # Make it safe
 
-To make your code safer put your API key to environment variable ```OCD_API_KEY``` and avoid passing it to the geocoder constructor as plain text in your code:
+To make your code safer put your API key to environment variable `OCD_API_KEY` and avoid passing it to the geocoder constructor as plain text in your code:
 
 ```javascript
     const coder = new geocoder() //In this case your are expected to provide your API key in OCD_API_KEY variable before using geocoder constructor
@@ -76,15 +76,15 @@ To make your code safer put your API key to environment variable ```OCD_API_KEY`
 
 OpenCageData provides lots of useful query options like countrycode, languagecode, bounds, add_request and manu more. You may use all of them with this API client.
 Please check the full list of query options [here](https://opencagedata.com/api#forward-opt)
-In order to make use of query options please pass a JSON object instead of a string to the ```geocode``` function, like so:
+In order to make use of query options please pass a JSON object instead of a string to the `geocode` function, like so:
 
 ```javascript
     const coder = new geocoder()
 
     coder.geocode({q: 'New York', limit: 10, countrycode:'uk', no_annotations: 0}).then(console.log)
 ```
-Please note that your query string goes to a mandatory property ```q``` of the query object.
-Please be aware that whenever you provide a string as an argument to the ```geocode``` function (instead of a query object) the following default query options are applied to your query:
+Please note that your query string goes to a mandatory property `q` of the query object.
+Please be aware that whenever you provide a string as an argument to the `geocode` function (instead of a query object) the following default query options are applied to your query:
 Option | Default value
 ------ | -------------
 limit | 1
@@ -99,14 +99,15 @@ no_annotations | 1
 
 # Response caching
 
-By default the ```geocoder``` automaticaly caches responses *in memory*.
-The cache is *shared* among all instances of the ```geocoder``` class with _THE SAME API KEY_.
-If you change an API key, it makes cached responses effectively invisible to other ```geocoder``` instances if they use other API keys.
+By default the `geocoder` automaticaly caches responses *in memory*.
+The cache is shared among all instances of the `geocoder` class that use *the same API KEY*.
+If you change an API key, it makes cached responses effectively invisible to other `geocoder` instances if they use other API keys.
 
-If you would like to swith off the caching mechanism you may provide ```{ cached: false }``` option to the object constructor like so:
+If you would like a particular `geocoder` instance not to use caching you may provide it a `{ cached: false }` option like so:
 
 ```javascript
     const coder = new geocoder({ cached: false })
+    // By default "cached" option is set to true
 ```
 
 
@@ -114,10 +115,10 @@ If you would like to swith off the caching mechanism you may provide ```{ cached
 
 
 # Batch requests throttling
-It's important to note that just like any other service provider OpenCageData puts certain [limits](https://opencagedata.com/api#rate-limiting) on how much requests you may send per second. Free trial accounts are limited to 1 request per second. If you're going to issue requests at a faster rate you're probably going to be blocked by the server. Payed accounts are limited to much larger numbers of requests per second, but still these are not infinite numbers. When it comes to batch processing, a pace keeping techniques comes into play. The `geocoder-opencagedata` supports requests throttling by default so you can rest peacefully. If you send lots of requests to `geocoder` they will be arranged in a queue and scheduled to be sent to OCD at rate of 1 request per second. This is exactly what free accounts need. But if you've got a payed account and want to utilize the service at a faster rate though still within the allowed limits you may want to tweek internal pace keeper with `pace_limit` option like so:
+It's important to note that just like any other service provider OpenCageData puts certain [limits](https://opencagedata.com/api#rate-limiting) on how much requests you may send per second. Free trial accounts are limited to 1 request per second. If you're going to issue requests at a faster rate you're probably going to be blocked by the server. Payed accounts are limited to much larger numbers of requests per second, but still these are not infinite numbers. When it comes to batch processing, a pace keeping techniques comes into play. The `geocoder-opencagedata` client supports requests throttling by default so you can rest peacefully. If you send lots of requests to `geocoder-opencagedata` they will be arranged in a queue and scheduled to be sent at rate of 1 request per second. This is exactly what free accounts need. But if you've got a payed account and want to utilize the service at a faster rate though still within the allowed limits you may want to tweek internal pace keeper by `pace_limit` option like so:
 ```javascript
     const coder = new geocoder({ pace_limit: 15 })
         // This will limit the geocoder to 15 requests per second.
         // Put here whatever suits your contract with OpenCageData
-        // By default pace_limit equals to 1
+        // By default "pace_limit" equals to 1
 ```
