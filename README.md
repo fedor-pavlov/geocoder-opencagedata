@@ -21,7 +21,7 @@
 
             console.log('Geo coordinates:', resp.geo)
             //or use any other properties of the resp object which contains a complete response from API service
-            //for more details on response properties please consult with API Reference: https://opencagedata.com/api#forward-resp
+            //for more details on response properties please consult with API Reference at https://opencagedata.com/api#forward-resp
         }
 
         else {
@@ -48,7 +48,7 @@ Reverse geocoding is performed pretty the same way. The only difference is that 
             console.log('Full response:', resp)
             console.log('The most probable address:', resp.address)
             //you may also want to check all other suggestions provided in array: resp.results
-            //for more details on response properties please consult with API Reference: https://opencagedata.com/api#reverse-resp
+            //for more details on response properties please consult with API Reference at https://opencagedata.com/api#reverse-resp
         }
     })
 
@@ -60,7 +60,7 @@ Reverse geocoding is performed pretty the same way. The only difference is that 
 
 
 
-# Making it safe
+# Make it safe
 
 To make your code safer put your API key to environment variable ```OCD_API_KEY``` and avoid passing it to the geocoder constructor as plain text in your code:
 
@@ -74,20 +74,23 @@ To make your code safer put your API key to environment variable ```OCD_API_KEY`
 
 # Tune your query
 
-Instead of sending just a string to geocoding service, you may check [these query parameters](https://opencagedata.com/api#forward-opt) and submit them as a JSON object to the ```geocode``` function, like so:
+OpenCageData provides lots of useful query options like countrycode, languagecode, bounds, add_request and manu more. You may use all of them with this API client.
+Please check the full list of query options [here](https://opencagedata.com/api#forward-opt)
+In order to make use of query options please pass a JSON object instead of a string to the ```geocode``` function, like so:
 
 ```javascript
     const coder = new geocoder()
 
     coder.geocode({q: 'New York', limit: 10, countrycode:'uk', no_annotations: 0}).then(console.log)
 ```
-
-Whenever you provide a string as an argument to the ```geocode``` function the following set of default query options is applied to your query:
+Please note that your query string goes to a mandatory property ```q``` of the query object.
+Please be aware that whenever you provide a string as an argument to the ```geocode``` function (instead of a query object) the following default query options are applied to your query:
 Option | Default value
 ------ | -------------
 limit | 1
 pretty | 0
 no_annotations | 1
+The same default values will be applied to your query object as well if you ommit them from your query object.
 
 
 
