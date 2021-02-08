@@ -15,6 +15,7 @@ const DEFAULT_QUERY     : IGeoQuery = {
     pretty          : 0,
     no_annotations  : 1
 }
+const CACHE             : {[key: string]: GeoResult} = {}
 
 
 
@@ -25,6 +26,7 @@ export interface IGeocoderOptions {
     api_key?    : string
     api_url?    : string
     pace_limit? : number
+    cached?     : boolean
 }
 
 export interface IGeoQuery {
@@ -89,28 +91,60 @@ export class geocoder {
     private API_KEY : string | undefined
     private API_URL : string
     private pace    : pacekeeper
+    private cached  : boolean
 
-    constructor({api_key, api_url, pace_limit}: IGeocoderOptions = {}) {
+    constructor({api_key, api_url, pace_limit, cached}: IGeocoderOptions = { cached: true }) {
 
         this.API_KEY = api_key || process.env[ENV_API_KEY]
         this.API_URL = api_url || process.env[ENV_API_URL] || DEFAULT_API_URL
         this.pace    = new pacekeeper({ interval: PACE_INTERVAL, pace: pace_limit || PACE_LIMIT, parse_429: true })
+        this.cached  = cached === undefined ? true : !!cached
     }
 
     geocode(query : string | IGeoQuery): Promise<GeoResult> {
 
-        let q   : any = Object.assign(DEFAULT_QUERY, {key: this.API_KEY}, typeof query === 'string' ? {q: query} : query)
-        let url : string = `${this.API_URL}?${Object.keys(q).map(key => `${encodeURIComponent(key)}=${encodeURIComponent(q[key])}`).join('&')}`
+        let q       : any = Object.assign(DEFAULT_QUERY, {key: this.API_KEY}, typeof query === 'string' ? {q: query.trim()} : query)
+        let url     : string = `${this.API_URL}?${Object.keys(q).map(key => `${encodeURIComponent(key)}=${encodeURIComponent(q[key])}`).join('&')}`
+
+        if (this.cached) {
+
+            let cached  : GeoResult | undefined = CACHE[url.toLowerCase()]
+            if (cached) return Promise.resolve(cached)
+        }
 
         return this.pace
             .submit(() => fetch(url)).promise
-            .then(res => typeof res?.json === 'function' ? res.json().then((res: any) => new GeoResult(res)) : build_error(res))
+            .then(res => typeof res?.json === 'function' ? res.json().then(this.cached ? cache_result(url) : build_result) : build_error(res))
     }
 }
 
 export default geocoder
 
 
+
+
+
+function cache_result(url: string): (res: any) => GeoResult {
+
+    return function(res: any): GeoResult {
+
+        let result = new GeoResult(res)
+
+        if (url && typeof url === 'string') {
+
+            CACHE[url.toLowerCase()] = result
+        }
+
+        return result
+    }
+}
+
+
+
+function build_result(res: any): GeoResult {
+
+    return new GeoResult(res)
+}
 
 
 
@@ -123,6 +157,8 @@ function build_error(res: any): GeoResult {
         }
     })
 }
+
+
 
 class GeoResult implements IGeoResult {
 
