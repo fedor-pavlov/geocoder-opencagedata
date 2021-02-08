@@ -90,7 +90,8 @@ Option | Default value
 limit | 1
 pretty | 0
 no_annotations | 1
-The same default values will be applied to your query object as well if you ommit them from your query object.
+
+> The same default values will be applied to your query object when you ommit them.
 
 
 
