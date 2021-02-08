@@ -50,8 +50,8 @@ export interface IGeoQuery {
 
 export interface IGeoPoint {
 
-    lat : number
-    lng : number
+    lat : number | void
+    lng : number | void
 }
 
 export interface IGeoResponseForwardCoding {
@@ -163,6 +163,7 @@ function build_error(res: any): GeoResult {
 class GeoResult implements IGeoResult {
 
     public status : undefined | { code: number, message: string }
+    public total_results : undefined | number
     public results: undefined | {
         annotations?  : any
         bounds        : { northeast: IGeoPoint, southwest: IGeoPoint }
@@ -179,11 +180,11 @@ class GeoResult implements IGeoResult {
 
     get ok() : boolean {
 
-        return this.status?.code === 200
+        return this.status?.code === 200 && (this.total_results ? this.total_results > 0 : false)
     }
 
     get geo() : IGeoPoint {
 
-        return this.ok && Array.isArray(this.results) && this.results.length > 0 ? this.results[0].geometry : { lat: 0, lng: 0 }
+        return this.ok && Array.isArray(this.results) && this.results.length > 0 ? this.results[0].geometry : { lat: void 0, lng: void 0 }
     }
 }
