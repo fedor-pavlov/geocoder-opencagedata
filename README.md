@@ -108,3 +108,4 @@ If you would like to swith off the caching mechanism you may provide ```{ cached
 ```javascript
     const coder = new geocoder({ cached: false })
 ```
+
