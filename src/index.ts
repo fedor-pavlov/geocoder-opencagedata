@@ -95,7 +95,12 @@ export class geocoder {
 
     constructor({api_key, api_url, pace_limit, cached}: IGeocoderOptions = { cached: true }) {
 
-        this.API_KEY = api_key || process.env[ENV_API_KEY]
+        Object.defineProperty(this, 'API_KEY', {
+            enumerable: false,
+            writable: false,
+            value: api_key || process.env[ENV_API_KEY]
+        })
+
         this.API_URL = api_url || process.env[ENV_API_URL] || DEFAULT_API_URL
         this.pace    = new pacekeeper({ interval: PACE_INTERVAL, pace: pace_limit || PACE_LIMIT, parse_429: true })
         this.cached  = cached === undefined ? true : !!cached
