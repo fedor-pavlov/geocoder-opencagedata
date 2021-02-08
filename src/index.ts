@@ -192,4 +192,9 @@ class GeoResult implements IGeoResult {
 
         return this.ok && Array.isArray(this.results) && this.results.length > 0 ? this.results[0].geometry : { lat: void 0, lng: void 0 }
     }
+
+    get address() : string {
+
+        return this.ok && Array.isArray(this.results) && this.results.length > 0 ? this.results[0].formatted : ''
+    }
 }
