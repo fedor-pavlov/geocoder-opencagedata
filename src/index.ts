@@ -184,6 +184,6 @@ class GeoResult implements IGeoResult {
 
     get geo() : IGeoPoint {
 
-        return this.ok && Array.isArray(this.results) ? this.results[0].geometry : { lat: 0, lng: 0 }
+        return this.ok && Array.isArray(this.results) && this.results.length > 0 ? this.results[0].geometry : { lat: 0, lng: 0 }
     }
 }
