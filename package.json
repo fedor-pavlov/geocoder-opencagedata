@@ -1,6 +1,6 @@
 {
   "name": "geocoder-opencagedata",
-  "version": "1.3.7",
+  "version": "1.3.8",
   "description": "An OpenCageData geocoder API client that supports caching and is written on typescript",
   "main": "dist/index.js",
   "scripts": {
