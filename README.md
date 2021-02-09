@@ -74,7 +74,7 @@ To make your code safer put your API key to environment variable `OCD_API_KEY` a
 
 # Tune your query
 
-OpenCageData provides lots of useful query options like countrycode, languagecode, bounds, add_request and manu more. You may use all of them with this API client.
+OpenCageData provides lots of useful query options like countrycode, languagecode, bounds, add_request and many more. You may use all of them with this API client.
 Please check the full list of query options [here](https://opencagedata.com/api#forward-opt)
 In order to make use of query options please pass a JSON object instead of a string to the `geocode` function, like so:
 
@@ -114,7 +114,7 @@ If you would like a particular `geocoder` instance not to use caching you may pr
 
 
 
-# Batch requests throttling
+# Batch request throttling
 It's important to note that just like any other service provider OpenCageData puts certain [limits](https://opencagedata.com/api#rate-limiting) on how much requests you may send per second. Free trial accounts are limited to 1 request per second. If you're going to issue requests at a faster rate you're probably going to be blocked by the server. Payed accounts are limited to much larger numbers of requests per second, but still these are not infinite numbers. When it comes to batch processing, a pace keeping techniques comes into play. The `geocoder-opencagedata` client supports requests throttling by default so you can rest peacefully. If you send lots of requests to `geocoder-opencagedata` they will be arranged in a queue and scheduled to be sent at rate of 1 request per second. This is exactly what free accounts need. But if you've got a payed account and want to utilize the service at a faster rate though still within the allowed limits you may want to tweek internal pace keeper by `pace_limit` option like so:
 ```javascript
     const coder = new geocoder({ pace_limit: 15 })
