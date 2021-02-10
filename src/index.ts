@@ -1,5 +1,7 @@
 import fetch from 'node-fetch'
-import pacekeeper from 'pace-keeper'
+import { Pacekeeper } from 'pace-keeper'
+
+
 
 
 
@@ -86,11 +88,11 @@ export interface IGeoResult {
 
 
 
-export class geocoder {
+export class Geocoder {
 
     private API_KEY : string | undefined
     private API_URL : string
-    private pace    : pacekeeper
+    private pace    : Pacekeeper
     private cached  : boolean
 
     constructor({api_key, api_url, pace_limit, cached}: IGeocoderOptions = { cached: true }) {
@@ -102,7 +104,7 @@ export class geocoder {
         })
 
         this.API_URL = api_url || process.env[ENV_API_URL] || DEFAULT_API_URL
-        this.pace    = new pacekeeper({ interval: PACE_INTERVAL, pace: pace_limit || PACE_LIMIT, parse_429: true })
+        this.pace    = new Pacekeeper({ interval: PACE_INTERVAL, pace: pace_limit || PACE_LIMIT, parse_429: true })
         this.cached  = cached === undefined ? true : !!cached
     }
 
@@ -123,7 +125,8 @@ export class geocoder {
     }
 }
 
-export default geocoder
+export default Geocoder
+export class geocoder extends Geocoder {} //backward compatibility with versions prior to 1.4.0
 
 
 

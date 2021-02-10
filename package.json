@@ -36,6 +36,6 @@
   },
   "dependencies": {
     "node-fetch": "^2.6.1",
-    "pace-keeper": "^1.1.1"
+    "pace-keeper": "^1.2.1"
   }
 }
